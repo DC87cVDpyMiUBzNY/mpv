@@ -20,6 +20,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
 
 #include "client.h"
 #include "command.h"
@@ -163,8 +164,10 @@ bool get_internal_paused(struct MPContext *mpctx)
 static bool is_h264(struct MPContext *mpctx)
 {
     struct track *track = mpctx->vo_chain ? mpctx->vo_chain->track : NULL;
-    return track && track->stream && track->stream->codec &&
-           track->stream->codec->codec_id == AV_CODEC_ID_H264;
+    if (!track || !track->stream || !track->stream->codec)
+        return false;
+    const char *codec = track->stream->codec->codec;
+    return codec && strcmp(codec, "h264") == 0;
 }
 
 // The value passed here is the new value for mpctx->opts->pause
