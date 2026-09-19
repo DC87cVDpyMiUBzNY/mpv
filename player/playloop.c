@@ -165,11 +165,23 @@ void set_pause_state(struct MPContext *mpctx, bool user_pause)
 {
     struct MPOpts *opts = mpctx->opts;
 
+    bool was_user_paused = opts->pause;
+
     opts->pause = user_pause;
 
     bool internal_paused = get_internal_paused(mpctx);
     if (internal_paused != mpctx->paused) {
         mpctx->paused = internal_paused;
+
+        if (was_user_paused && !user_pause &&
+            mpctx->vo_chain && mpctx->video_pts != MP_NOPTS_VALUE &&
+            mpctx->demuxer && mpctx->demuxer->seekable)
+        {
+            MP_VERBOSE(mpctx, "resume: seeking to last shown frame %f\n",
+                       mpctx->video_pts);
+            queue_seek(mpctx, MPSEEK_ABSOLUTE, mpctx->video_pts,
+                       MPSEEK_EXACT, MPSEEK_DEFAULT);
+        }
 
         if (mpctx->ao) {
             bool eof = mpctx->audio_status == STATUS_EOF;
