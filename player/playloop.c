@@ -169,6 +169,14 @@ void set_pause_state(struct MPContext *mpctx, bool user_pause)
 
     opts->pause = user_pause;
 
+    MP_INFO(mpctx, "DEBUG set_pause_state: was_user_paused=%d user_pause=%d "
+           "internal_paused=%d mpctx->paused=%d video_pts=%f seekable=%d vo_chain=%p\n",
+           was_user_paused, user_pause,
+           get_internal_paused(mpctx), mpctx->paused,
+           mpctx->video_pts == MP_NOPTS_VALUE ? -1.0 : mpctx->video_pts,
+           mpctx->demuxer ? mpctx->demuxer->seekable : -1,
+           (void*)mpctx->vo_chain);
+
     bool internal_paused = get_internal_paused(mpctx);
     if (internal_paused != mpctx->paused) {
         mpctx->paused = internal_paused;
