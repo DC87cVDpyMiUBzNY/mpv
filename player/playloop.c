@@ -160,6 +160,13 @@ bool get_internal_paused(struct MPContext *mpctx)
     return mpctx->opts->pause || mpctx->paused_for_cache;
 }
 
+static bool is_h264(struct MPContext *mpctx)
+{
+    struct track *track = mpctx->vo_chain ? mpctx->vo_chain->track : NULL;
+    return track && track->stream && track->stream->codec &&
+           track->stream->codec->codec_id == AV_CODEC_ID_H264;
+}
+
 // The value passed here is the new value for mpctx->opts->pause
 void set_pause_state(struct MPContext *mpctx, bool user_pause)
 {
@@ -176,7 +183,8 @@ void set_pause_state(struct MPContext *mpctx, bool user_pause)
 
         if (was_paused && !internal_paused &&
             mpctx->step_frames == 0 &&
-            mpctx->vo_chain && mpctx->video_pts != MP_NOPTS_VALUE &&
+            is_h264(mpctx) &&
+            mpctx->video_pts != MP_NOPTS_VALUE &&
             mpctx->demuxer && mpctx->demuxer->seekable)
         {
             double target = mpctx->video_pts;
