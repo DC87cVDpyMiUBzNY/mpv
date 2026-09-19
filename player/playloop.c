@@ -175,12 +175,19 @@ void set_pause_state(struct MPContext *mpctx, bool user_pause)
         mpctx->paused = internal_paused;
 
         if (was_paused && !internal_paused &&
+            mpctx->step_frames == 0 &&
             mpctx->vo_chain && mpctx->video_pts != MP_NOPTS_VALUE &&
             mpctx->demuxer && mpctx->demuxer->seekable)
         {
-            MP_VERBOSE(mpctx, "resume: seeking to last shown frame %f\n",
-                       mpctx->video_pts);
-            queue_seek(mpctx, MPSEEK_ABSOLUTE, mpctx->video_pts,
+            double target = mpctx->video_pts;
+            if (mpctx->num_next_frames > 0 &&
+                mpctx->next_frames[0]->pts != MP_NOPTS_VALUE)
+            {
+                target = mpctx->next_frames[0]->pts;
+            }
+
+            MP_VERBOSE(mpctx, "resume: seeking to %f\n", target);
+            queue_seek(mpctx, MPSEEK_ABSOLUTE, target,
                        MPSEEK_EXACT, MPSEEK_DEFAULT);
         }
 
