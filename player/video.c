@@ -476,7 +476,7 @@ static int get_req_frames(struct MPContext *mpctx, bool eof)
     MP_VERBOSE(mpctx, "[get_req_frames] req: %d", req);
     int final = MPCLAMP(req, min, MP_ARRAY_SIZE(mpctx->next_frames) - 1);
     MP_VERBOSE(mpctx, "[get_req_frames] final: %d", final);
-    return final
+    return final;
 }
 
 // Whether it's fine to call add_new_frame() now.
