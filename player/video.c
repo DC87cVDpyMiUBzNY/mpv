@@ -473,14 +473,12 @@ static int get_req_frames(struct MPContext *mpctx, bool eof)
         return min;
 
     int req = vo_get_num_req_frames(mpctx->video_out);
-    int final = MPCLAMP(req, min, MP_ARRAY_SIZE(mpctx->next_frames) - 1);
-    return final;
+    return MPCLAMP(req, min, MP_ARRAY_SIZE(mpctx->next_frames) - 1);
 }
 
 // Whether it's fine to call add_new_frame() now.
 static bool needs_new_frame(struct MPContext *mpctx)
 {
-    MP_VERBOSE(mpctx, "[needs_new_frame] num_next_frames:%d  get_req_frames:%d\n", mpctx->num_next_frames, get_req_frames(mpctx, false));
     return mpctx->num_next_frames < get_req_frames(mpctx, false);
 }
 
