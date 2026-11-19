@@ -212,7 +212,7 @@ enum {
     VO_DR_FLAG_HOST_CACHED = 1 << 0,
 };
 
-#define VO_MAX_REQ_FRAMES 8
+#define VO_MAX_REQ_FRAMES 10
 #define VO_MAX_SWAPCHAIN_DEPTH 8
 
 struct vo;
