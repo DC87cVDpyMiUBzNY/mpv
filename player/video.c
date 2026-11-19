@@ -460,7 +460,7 @@ static int get_req_frames(struct MPContext *mpctx, bool eof)
         return 1;
 
     if (!use_video_lookahead(mpctx))
-        return 2;
+        return 1;
 
     if (mpctx->vo_chain && mpctx->vo_chain->is_sparse)
         return 1;
@@ -473,9 +473,9 @@ static int get_req_frames(struct MPContext *mpctx, bool eof)
         return min;
 
     int req = vo_get_num_req_frames(mpctx->video_out);
-    MP_VERBOSE(mpctx, "[get_req_frames] req: %d", req);
+    MP_VERBOSE(mpctx, "[get_req_frames] req: %d \n", req);
     int final = MPCLAMP(req, min, MP_ARRAY_SIZE(mpctx->next_frames) - 1);
-    MP_VERBOSE(mpctx, "[get_req_frames] final: %d", final);
+    MP_VERBOSE(mpctx, "[get_req_frames] final: %d \n", final);
     return final;
 }
 
