@@ -159,7 +159,7 @@ static int init(struct ra_hwdec *hw)
     // work correctly.
     const int max_images = 3;
     // dummy dimensions, AImageReader only transports hardware buffers
-    media_status_t ret = p->AImageReader_newWithUsage(3840, 2160
+    media_status_t ret = p->AImageReader_newWithUsage(3840, 2160,
         AIMAGE_FORMAT_PRIVATE, AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE,
         max_images, &p->reader);
     if (ret != AMEDIA_OK) {
