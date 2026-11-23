@@ -157,9 +157,9 @@ static int init(struct ra_hwdec *hw)
     // (incl. ones currently queued) at the same time.
     // The documentation recommends a margin of 2 for acquireLatestImage to
     // work correctly.
-    const int max_images = 1;
+    const int max_images = 3;
     // dummy dimensions, AImageReader only transports hardware buffers
-    media_status_t ret = p->AImageReader_newWithUsage(3840, 2160,
+    media_status_t ret = p->AImageReader_newWithUsage(16, 16,
         AIMAGE_FORMAT_PRIVATE, AHARDWAREBUFFER_USAGE_GPU_SAMPLED_IMAGE,
         max_images, &p->reader);
     if (ret != AMEDIA_OK) {
